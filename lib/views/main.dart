@@ -1,7 +1,8 @@
 // main.dart
 import 'package:flutter/material.dart';
-import 'package:fymath/routes/routes.dart';
 import 'package:get/get.dart';
+import '../routes/routes.dart';
+// import 'routes/app_pages.dart';
 
 void main() {
   runApp(MyApp());
@@ -11,11 +12,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      title: 'Fymath Game',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      initialRoute: AppRoutes.LOGIN,
+      title: 'Your App Title',
+      initialRoute: AppRoutes.START,
       getPages: AppPages.routes,
     );
   }
