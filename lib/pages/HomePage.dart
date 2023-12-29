@@ -118,8 +118,20 @@ class _HomePageState extends State<HomePage> {
       body: Column(
         children: [
           Container(
+            width: 1000,
             height: 160,
             color: Colors.deepPurple,
+            child: const Center(
+              child: Text(
+                "Level Easy",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize:
+                      20, // Ubah sesuai dengan ukuran font yang diinginkan
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
           ),
           Expanded(
             child: Container(
