@@ -42,7 +42,8 @@ class _LoginPageState extends State<LoginPage> {
                   // Tampilkan pesan error atau tindakan yang sesuai
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
-                      content: Text('Login gagal. Periksa kembali username dan password.'),
+                      content: Text(
+                          'Login gagal. Periksa kembali username dan password.'),
                     ),
                   );
                 }
