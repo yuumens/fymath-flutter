@@ -1,124 +1,54 @@
-import 'dart:math';
+// ignore_for_file: must_be_immutable, file_names
 
 import 'package:flutter/material.dart';
 import 'package:fymath/controllers/api_controller.dart';
-import 'package:fymath/pages/Const.dart';
-import 'package:fymath/pages/utils/my_button.dart';
-import 'package:fymath/pages/utils/result_massage.dart';
+import 'package:fymath/pages/Levels/Level.dart';
 import 'package:get/get.dart';
 
-enum MathOperator { addition, subtraction }
+final MathLevel easyLevel = MathLevel(
+  level: 1,
+  operator1: MathOperator.addition,
+  operator2: MathOperator.subtraction,
+  allowNegative: false,
+  requiredPoints: 10,
+);
+final MathLevel normalLevel = MathLevel(
+  level: 2,
+  operator1: MathOperator.multiplication,
+  operator2: MathOperator.division,
+  allowNegative: false,
+  requiredPoints: 10,
+);
+final MathLevel hardLevel = MathLevel(
+  level: 3,
+  operator1: MathOperator.addition,
+  operator2: MathOperator.subtraction,
+  allowNegative: false,
+  requiredPoints: 10,
+);
+final MathLevel superLevel = MathLevel(
+  level: 4,
+  operator1: MathOperator.addition,
+  operator2: MathOperator.subtraction,
+  allowNegative: true,
+  requiredPoints: 10,
+);
 
-class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+class HomePage extends StatelessWidget {
+  late MathLevel currentLevel;
+  late int points = 0;
 
-  @override
-  State<HomePage> createState() => _HomePageState();
-}
+  HomePage({super.key}) {
+    // Initialize easyLevel before using it
+    currentLevel = easyLevel;
+    points = 0;
+  }
 
-class _HomePageState extends State<HomePage> {
   final ApiController _apiController = Get.find();
-
-  List<String> numberPad = [
-    '7',
-    '8',
-    '9',
-    'C',
-    '4',
-    '5',
-    '6',
-    'DEL',
-    '1',
-    '2',
-    '3',
-    '=',
-    '-',
-    '0'
-  ];
-
-  int numberA = 1;
-  int numberB = 1;
-  String userAnswer = '';
-  MathOperator currentOperator = MathOperator.addition;
-
-  var randomNumber = Random();
-
-  void buttonTapped(String button) {
-    setState(() {
-      if (button == '=') {
-        checkResult();
-      } else if (button == 'C') {
-        userAnswer = '';
-      } else if (button == 'DEL') {
-        if (userAnswer.isNotEmpty) {
-          userAnswer = userAnswer.substring(0, userAnswer.length - 1);
-        }
-      } else if (button == '-') {
-        // Tambahkan tanda minus jika belum ada
-        if (!userAnswer.startsWith('-') && userAnswer.isEmpty) {
-          userAnswer += '-';
-        }
-      } else if (userAnswer.length < 3) {
-        userAnswer += button;
-      }
-    });
-  }
-
-  void checkResult() {
-    int correctResult = 0;
-
-    if (currentOperator == MathOperator.addition) {
-      correctResult = numberA + numberB;
-    } else {
-      correctResult = numberA - numberB;
-    }
-
-    if (correctResult == int.parse(userAnswer)) {
-      showDialog(
-          context: context,
-          builder: (context) {
-            return ResultMessage(
-              message: 'Correct!',
-              onTap: goToNextQuestion,
-              icon: Icons.arrow_forward,
-            );
-          });
-    } else {
-      showDialog(
-          context: context,
-          builder: (context) {
-            return ResultMessage(
-              message: 'Sorry try again',
-              onTap: goBackToQuestion,
-              icon: Icons.rotate_left,
-            );
-          });
-    }
-  }
-
-  void goToNextQuestion() {
-    Navigator.of(context).pop();
-
-    setState(() {
-      userAnswer = '';
-    });
-
-    numberA = randomNumber.nextInt(10);
-    numberB = randomNumber.nextInt(10);
-
-    currentOperator = randomNumber.nextBool()
-        ? MathOperator.addition
-        : MathOperator.subtraction;
-  }
-
-  void goBackToQuestion() {
-    Navigator.of(context).pop();
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.deepPurple[300],
       body: Column(
         children: [
           Container(
@@ -127,80 +57,140 @@ class _HomePageState extends State<HomePage> {
             color: Colors.deepPurple,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisSize: MainAxisSize.max,
               children: [
-                const Expanded(
-                  child: Center(
-                    child: Text(
-                      "Level Easy",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
+                Expanded(
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const SizedBox(height: 20),
+                        Text(
+                          "Level ${currentLevel.level}",
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 30,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: "Motley",
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        Text(
+                          "Points: $points",
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                            fontFamily: "Motley",
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
                 IconButton(
-                  icon: const Icon(
-                    Icons.logout,
-                    color: Colors.white,
-                  ),
+                  icon: const Icon(Icons.logout),
                   onPressed: () {
                     _apiController.signOut();
                   },
+                  color: Colors.white,
                 ),
               ],
             ),
           ),
-          Expanded(
-            child: Container(
-              child: Center(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      '$numberA${currentOperator == MathOperator.addition ? ' + ' : ' - '}$numberB = ',
-                      style: whiteTextStyle,
-                    ),
-                    Container(
-                      height: 50,
-                      width: 100,
-                      decoration: BoxDecoration(
-                        color: Colors.deepPurple[400],
-                        borderRadius: BorderRadius.circular(4),
-                      ),
-                      child: Center(
-                        child: Text(
-                          userAnswer,
-                          style: whiteTextStyle,
-                        ),
-                      ),
-                    )
-                  ],
-                ),
+          const SizedBox(
+            height: 150,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              _buildBox(
+                  'Level 1 \nStatus : ${currentLevel.level == 1 ? (points >= currentLevel.requiredPoints ? "Complete" : "Not Complete") : ""}',
+                  Colors.red),
+              _buildBox(
+                  'Level 2 \nStatus : ${currentLevel.level == 2 ? (points >= currentLevel.requiredPoints ? "Complete" : "Not Complete") : ""}',
+                  Colors.blue),
+            ],
+          ),
+          const SizedBox(height: 20),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              _buildBox(
+                  'Level 3 \nStatus : ${currentLevel.level == 3 ? (points >= currentLevel.requiredPoints ? "Complete" : "Not Complete") : ""}',
+                  Colors.green),
+              _buildBox(
+                  'Level 4 \nStatus : ${currentLevel.level == 4 ? (points >= currentLevel.requiredPoints ? "Complete" : "Not Complete") : ""}',
+                  Colors.orange),
+            ],
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Get.to(Level(
+                initialLevel: currentLevel,
+                initialPoints: points,
+              ));
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.deepPurple,
+              elevation: 4, // Add elevation for 3D effect
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+            ),
+            child: const Text(
+              'Start',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                fontFamily: "Motley",
               ),
             ),
           ),
-          Expanded(
-            flex: 2,
-            child: Padding(
-              padding: const EdgeInsets.all(4.0),
-              child: GridView.builder(
-                itemCount: numberPad.length,
-                physics: const NeverScrollableScrollPhysics(),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 4,
-                ),
-                itemBuilder: (context, index) {
-                  return MyButton(
-                    child: numberPad[index],
-                    onTap: () => buttonTapped(numberPad[index]),
-                  );
-                },
-              ),
-            ),
+          const SizedBox(
+            height: 20,
           ),
         ],
+      ),
+      bottomNavigationBar: BottomAppBar(
+        child: SizedBox(
+          height: 50.0,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              IconButton(
+                icon: const Icon(Icons.home),
+                onPressed: () {},
+              ),
+              IconButton(
+                icon: const Icon(Icons.person),
+                onPressed: () {},
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildBox(String text, Color color) {
+    return Container(
+      width: 150,
+      height: 150,
+      color: color,
+      child: Center(
+        child: Text(
+          text,
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 15,
+            fontFamily: "Motley",
+          ),
+        ),
       ),
     );
   }

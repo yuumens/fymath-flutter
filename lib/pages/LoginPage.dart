@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:fymath/controllers/api_controller.dart';
 import 'package:fymath/pages/ForgotPassword.dart';
 import 'package:get/get.dart';
+import 'package:fymath/pages/HomePage.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -93,6 +94,12 @@ class _LoginScreenState extends State<LoginScreen> {
       body: GestureDetector(
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
         child: Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage('assets/images/BGLogin.png'),
+              fit: BoxFit.cover,
+            ),
+          ),
           child: Column(
             children: [
               Expanded(
@@ -127,6 +134,7 @@ class _LoginScreenState extends State<LoginScreen> {
               SizedBox(
                 height: 20,
               ),
+              Container(),
               Expanded(
                 flex: 2,
                 child: playAreas == false
@@ -143,11 +151,16 @@ class _LoginScreenState extends State<LoginScreen> {
                           width: double.infinity,
                           height: double.infinity,
                           decoration: BoxDecoration(
+                            // image: DecorationImage(
+                            //   image: AssetImage('assets/images/BGLogin.png'),
+                            //   fit: BoxFit.cover,
+                            // ),
+                            // backgroundBlendMode: BlendMode.darken,
                             borderRadius: const BorderRadius.only(
                               topLeft: Radius.circular(20),
                               topRight: Radius.circular(20),
                             ),
-                            color: Colors.white,
+                            color: Color.fromARGB(82, 161, 161, 161),
                             boxShadow: [
                               BoxShadow(
                                 offset: const Offset(2, 2),
@@ -166,11 +179,11 @@ class _LoginScreenState extends State<LoginScreen> {
                                 children: [
                                   Padding(
                                     padding: const EdgeInsets.only(
-                                        left: 15, top: 20),
+                                        left: 15, top: 10),
                                     child: Text(
                                       "Login",
                                       style: TextStyle(
-                                        color: Colors.black,
+                                        color: Color.fromARGB(255, 0, 0, 0),
                                         fontSize: 22,
                                         fontWeight: FontWeight.bold,
                                       ),
@@ -327,6 +340,13 @@ class _LoginScreenState extends State<LoginScreen> {
                                 child: MaterialButton(
                                   onPressed: () {
                                     _handleSignIn();
+                                    // Add your authentication logic here
+                                    // For demonstration purposes, navigate to HomePage.dart
+                                    Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => HomePage()),
+                                    );
                                   },
                                   height: 45,
                                   padding: EdgeInsets.symmetric(
@@ -387,7 +407,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               topLeft: Radius.circular(20),
                               topRight: Radius.circular(20),
                             ),
-                            color: Colors.white,
+                            color: Color.fromARGB(84, 161, 161, 161),
                             boxShadow: [
                               BoxShadow(
                                 offset: const Offset(2, 2),
