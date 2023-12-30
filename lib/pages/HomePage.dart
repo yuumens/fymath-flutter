@@ -1,9 +1,11 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:fymath/controllers/api_controller.dart';
 import 'package:fymath/pages/Const.dart';
 import 'package:fymath/pages/utils/my_button.dart';
 import 'package:fymath/pages/utils/result_massage.dart';
+import 'package:get/get.dart';
 
 enum MathOperator { addition, subtraction }
 
@@ -15,6 +17,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final ApiController _apiController = Get.find();
+
   List<String> numberPad = [
     '7',
     '8',
@@ -121,16 +125,31 @@ class _HomePageState extends State<HomePage> {
             width: 1000,
             height: 160,
             color: Colors.deepPurple,
-            child: const Center(
-              child: Text(
-                "Level Easy",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize:
-                      20, // Ubah sesuai dengan ukuran font yang diinginkan
-                  fontWeight: FontWeight.bold,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Expanded(
+                  child: Center(
+                    child: Text(
+                      "Level Easy",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
                 ),
-              ),
+                IconButton(
+                  icon: const Icon(
+                    Icons.logout,
+                    color: Colors.white,
+                  ),
+                  onPressed: () {
+                    _apiController.signOut();
+                  },
+                ),
+              ],
             ),
           ),
           Expanded(
@@ -140,12 +159,7 @@ class _HomePageState extends State<HomePage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      numberA.toString() +
-                          (currentOperator == MathOperator.addition
-                              ? ' + '
-                              : ' - ') +
-                          numberB.toString() +
-                          ' = ',
+                      '$numberA${currentOperator == MathOperator.addition ? ' + ' : ' - '}$numberB = ',
                       style: whiteTextStyle,
                     ),
                     Container(

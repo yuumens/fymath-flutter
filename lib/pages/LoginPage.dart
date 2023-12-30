@@ -1,7 +1,9 @@
-// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, avoid_unnecessary_containers, sized_box_for_whitespace, dead_code
+// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, avoid_unnecessary_containers, sized_box_for_whitespace, dead_code, no_leading_underscores_for_local_identifiers, unused_element, unrelated_type_equality_checks, library_private_types_in_public_api
 
 import 'package:flutter/material.dart';
+import 'package:fymath/controllers/api_controller.dart';
 import 'package:fymath/pages/ForgotPassword.dart';
+import 'package:get/get.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -13,6 +15,78 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   bool value = false;
   bool playAreas = false;
+
+  final TextEditingController emailTextController = TextEditingController();
+  final TextEditingController passwordTextController = TextEditingController();
+  final TextEditingController passwordRetypeTextController =
+      TextEditingController();
+  final ApiController _apiController = Get.find();
+
+  void _handleSignIn() async {
+    final email = emailTextController.text;
+    final password = passwordTextController.text;
+
+    if (email.isEmpty || password.isEmpty) {
+      Get.snackbar("Error", "Email and password are required",
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.black,
+          colorText: Colors.red);
+      return;
+    }
+
+    final loginSuccessful = await _apiController.signIn(email, password);
+
+    if (loginSuccessful) {
+      Get.offAndToNamed('/home');
+
+      Get.snackbar("Success", "Logged in successfully",
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.black,
+          colorText: Colors.green);
+    } else {
+      Get.snackbar("Error", "Failed to log in. Check your email and password",
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.black,
+          colorText: Colors.red);
+    }
+  }
+
+  void _handleSignUp() async {
+    final email = emailTextController.text;
+    final password = passwordTextController.text;
+    final enterPassword = passwordRetypeTextController.text;
+
+    if (email.isEmpty || password.isEmpty || enterPassword.isEmpty) {
+      Get.snackbar("Error", "Email, password, and retype password are required",
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.black,
+          colorText: Colors.red);
+      return;
+    }
+
+    if (password != enterPassword) {
+      Get.snackbar("Error", "Password and Retype Password is Not Match",
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.black,
+          colorText: Colors.red);
+      return;
+    }
+
+    final signUpSuccessful = await _apiController.signUp(email, password);
+
+    if (signUpSuccessful) {
+      Get.snackbar("Success", "Account has been created",
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.black,
+          colorText: Colors.green);
+    } else {
+      Get.snackbar("Error", "Failed to create account. Try again",
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.black,
+          colorText: Colors.red);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,13 +102,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: Padding(
                     padding: EdgeInsets.only(top: 50, left: 10),
                     child: TweenAnimationBuilder(
-                      child: Text(
-                        "Welcome Back",
-                        style: TextStyle(
-                            fontSize: 60,
-                            color: Colors.white,
-                            fontFamily: "Raleway"),
-                      ),
                       tween: Tween<double>(begin: 0, end: 1),
                       duration: Duration(milliseconds: 500),
                       builder: (BuildContext context, double _value, child) {
@@ -46,6 +113,13 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         );
                       },
+                      child: Text(
+                        "Welcome Back",
+                        style: TextStyle(
+                            fontSize: 60,
+                            color: Colors.white,
+                            fontFamily: "Raleway"),
+                      ),
                     ),
                   ),
                 ),
@@ -57,6 +131,14 @@ class _LoginScreenState extends State<LoginScreen> {
                 flex: 2,
                 child: playAreas == false
                     ? TweenAnimationBuilder(
+                        tween: Tween<double>(begin: 0, end: 1),
+                        duration: Duration(milliseconds: 600),
+                        builder: (BuildContext context, double _value, child) {
+                          return Opacity(
+                            opacity: _value,
+                            child: child,
+                          );
+                        },
                         child: Container(
                           width: double.infinity,
                           height: double.infinity,
@@ -106,6 +188,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     height: 50,
                                     width: 310,
                                     child: TextField(
+                                      controller: emailTextController,
                                       showCursor: true,
                                       cursorColor: Colors.black,
                                       decoration: InputDecoration(
@@ -151,7 +234,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                 height: 50,
                                 width: 310,
                                 child: TextField(
+                                  controller: passwordTextController,
                                   showCursor: true,
+                                  obscureText: true,
                                   cursorColor: Colors.black,
                                   decoration: InputDecoration(
                                     labelText: "Password",
@@ -223,7 +308,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                             );
                                           },
                                           child: Text(
-                                            "ForgotPassword?",
+                                            "Forgot Password?",
                                             style: TextStyle(
                                                 color: Colors.deepPurple[900],
                                                 fontSize: 16,
@@ -240,7 +325,9 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                               Container(
                                 child: MaterialButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    _handleSignIn();
+                                  },
                                   height: 45,
                                   padding: EdgeInsets.symmetric(
                                       vertical: 10, horizontal: 120),
@@ -277,20 +364,21 @@ class _LoginScreenState extends State<LoginScreen> {
                             ],
                           ),
                         ),
-                        tween: Tween<double>(begin: 0, end: 1),
-                        duration: Duration(milliseconds: 600),
-                        builder: (BuildContext context, double _value, child) {
-                          return Opacity(
-                            opacity: _value,
-                            child: child,
-                          );
-                        },
                       )
 
                     // *************************************************************************
                     // ******************************Signup*************************************
                     // *************************************************************************
                     : TweenAnimationBuilder(
+                        tween: Tween<double>(begin: 0, end: 1),
+                        duration: Duration(milliseconds: 600),
+                        curve: Curves.easeInQuart,
+                        builder: (BuildContext context, double _value, child) {
+                          return Opacity(
+                            opacity: _value,
+                            child: child,
+                          );
+                        },
                         child: Container(
                           width: double.infinity,
                           height: double.infinity,
@@ -337,6 +425,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     height: 50,
                                     width: 310,
                                     child: TextField(
+                                      controller: emailTextController,
                                       showCursor: true,
                                       cursorColor: Colors.black,
                                       decoration: InputDecoration(
@@ -382,6 +471,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                 height: 50,
                                 width: 310,
                                 child: TextField(
+                                  controller: passwordTextController,
+                                  obscureText: true,
                                   showCursor: true,
                                   cursorColor: Colors.black,
                                   decoration: InputDecoration(
@@ -424,7 +515,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                 height: 50,
                                 width: 310,
                                 child: TextField(
+                                  controller: passwordRetypeTextController,
                                   showCursor: true,
+                                  obscureText: true,
                                   cursorColor: Colors.black,
                                   decoration: InputDecoration(
                                     labelText: "Re-Enter Password",
@@ -463,11 +556,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               Container(
                                 child: MaterialButton(
                                   onPressed: () {
-                                    setState(() {
-                                      if (playAreas == true) {
-                                        playAreas = false;
-                                      }
-                                    });
+                                    _handleSignUp();
                                   },
                                   height: 45,
                                   padding: EdgeInsets.symmetric(
@@ -505,15 +594,6 @@ class _LoginScreenState extends State<LoginScreen> {
                             ],
                           ),
                         ),
-                        tween: Tween<double>(begin: 0, end: 1),
-                        duration: Duration(milliseconds: 600),
-                        curve: Curves.easeInQuart,
-                        builder: (BuildContext context, double _value, child) {
-                          return Opacity(
-                            opacity: _value,
-                            child: child,
-                          );
-                        },
                       ),
               ),
             ],

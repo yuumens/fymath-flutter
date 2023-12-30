@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, void_checks
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, void_checks, avoid_unnecessary_containers, sort_child_properties_last, no_leading_underscores_for_local_identifiers, library_private_types_in_public_api, sized_box_for_whitespace
 
 import 'package:flutter/material.dart';
 
@@ -42,7 +42,8 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                     width: 200,
                     decoration: BoxDecoration(
                       image: DecorationImage(
-                          image: AssetImage('assets/images/25.png'), fit: BoxFit.fill),
+                          image: AssetImage('assets/images/25.png'),
+                          fit: BoxFit.fill),
                     ),
                   ),
                   tween: Tween<double>(begin: 0, end: 1),
