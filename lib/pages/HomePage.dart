@@ -1,4 +1,7 @@
+// ignore_for_file: must_be_immutable, file_names
+
 import 'package:flutter/material.dart';
+import 'package:fymath/controllers/api_controller.dart';
 import 'package:fymath/pages/Levels/Level.dart';
 import 'package:get/get.dart';
 
@@ -35,11 +38,13 @@ class HomePage extends StatelessWidget {
   late MathLevel currentLevel;
   late int points = 0;
 
-  HomePage() {
+  HomePage({super.key}) {
     // Initialize easyLevel before using it
     currentLevel = easyLevel;
     points = 0;
   }
+
+  final ApiController _apiController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -50,34 +55,50 @@ class HomePage extends StatelessWidget {
             width: 1000,
             height: 160,
             color: Colors.deepPurple,
-            child: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(height: 20),
-                  Text(
-                    "Level ${currentLevel.level}",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 30,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: "Motley",
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                Expanded(
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const SizedBox(height: 20),
+                        Text(
+                          "Level ${currentLevel.level}",
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 30,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: "Motley",
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        Text(
+                          "Points: $points",
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                            fontFamily: "Motley",
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                  SizedBox(height: 20),
-                  Text(
-                    "Points: $points",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
-                      fontFamily: "Motley",
-                    ),
-                  ),
-                ],
-              ),
+                ),
+                IconButton(
+                  icon: const Icon(Icons.logout),
+                  onPressed: () {
+                    _apiController.signOut();
+                  },
+                  color: Colors.white,
+                ),
+              ],
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 150,
           ),
           Row(
@@ -91,7 +112,7 @@ class HomePage extends StatelessWidget {
                   Colors.blue),
             ],
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
@@ -103,7 +124,7 @@ class HomePage extends StatelessWidget {
                   Colors.orange),
             ],
           ),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
           ElevatedButton(
@@ -114,13 +135,13 @@ class HomePage extends StatelessWidget {
               ));
             },
             style: ElevatedButton.styleFrom(
-              primary: Colors.deepPurple,
+              backgroundColor: Colors.deepPurple,
               elevation: 4, // Add elevation for 3D effect
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10.0),
               ),
             ),
-            child: Text(
+            child: const Text(
               'Start',
               style: TextStyle(
                 color: Colors.white,
@@ -130,23 +151,23 @@ class HomePage extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
         ],
       ),
       bottomNavigationBar: BottomAppBar(
-        child: Container(
+        child: SizedBox(
           height: 50.0,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               IconButton(
-                icon: Icon(Icons.home),
+                icon: const Icon(Icons.home),
                 onPressed: () {},
               ),
               IconButton(
-                icon: Icon(Icons.person),
+                icon: const Icon(Icons.person),
                 onPressed: () {},
               ),
             ],

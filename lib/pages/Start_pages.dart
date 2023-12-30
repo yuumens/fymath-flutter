@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors, library_private_types_in_public_api, file_names, sort_child_properties_last, no_leading_underscores_for_local_identifiers, avoid_unnecessary_containers
+
 import 'package:flutter/material.dart';
 
 import 'loginPage.dart';
