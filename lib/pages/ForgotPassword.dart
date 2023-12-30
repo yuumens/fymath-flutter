@@ -42,7 +42,8 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                     width: 200,
                     decoration: BoxDecoration(
                       image: DecorationImage(
-                          image: AssetImage('assets/images/25.png'), fit: BoxFit.fill),
+                          image: AssetImage('assets/images/25.png'),
+                          fit: BoxFit.fill),
                     ),
                   ),
                   tween: Tween<double>(begin: 0, end: 1),
