@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:fymath/controllers/api_controller.dart';
 import 'package:fymath/pages/Levels/Level.dart';
 import 'package:get/get.dart';
+import 'package:fymath/models/Data.dart';
 
 final MathLevel easyLevel = MathLevel(
   level: 1,
