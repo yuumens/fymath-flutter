@@ -1,25 +1,12 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:fymath/pages/HomePage.dart';
 import 'package:fymath/pages/utils/my_button.dart';
 import 'package:fymath/pages/utils/result_massage.dart';
+import 'package:fymath/models/Data.dart';
 
-enum MathOperator { addition, subtraction, multiplication, division }
 
-class MathLevel {
-  final int level;
-  final MathOperator operator1;
-  final MathOperator operator2;
-  final bool allowNegative;
-  final int requiredPoints;
 
-  MathLevel({
-    required this.level,
-    required this.operator1,
-    required this.operator2,
-    required this.allowNegative,
-    required this.requiredPoints,
-  });
-}
 
 class Level extends StatefulWidget {
   final MathLevel initialLevel;
@@ -163,7 +150,28 @@ class _LevelState extends State<Level> {
       }
     }
 
-    if (correctResult == int.parse(userAnswer)) {
+    if(correctResult == int.parse(userAnswer)&& currentLevel.level == 4 && points ==9){
+      currentLevel.stopTimer();
+      
+      showDialog(
+        context: context,
+        builder: (context) {
+          return ResultMessage(
+            message: 'Finished with the time of: ${currentLevel.totalElapsedTime}',
+            onTap: (){
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                builder: (context) => HomePage()),
+              );
+            },
+            icon: Icons.arrow_forward,
+          );
+        },
+      );
+    }
+    else if (correctResult == int.parse(userAnswer)) {
+      currentLevel.totalElapsedTime += Duration(seconds: 1);
       showDialog(
         context: context,
         builder: (context) {
@@ -198,10 +206,10 @@ class _LevelState extends State<Level> {
     setState(() {
       userAnswer = '';
     });
-
     if (currentLevel.level == 1) {
       numberA = randomNumber.nextInt(11);
       numberB = randomNumber.nextInt(11);
+      
     } else if (currentLevel.level == 2) {
       numberA = randomNumber.nextInt(11);
       numberB = 0;
@@ -264,6 +272,7 @@ class _LevelState extends State<Level> {
   void initState() {
     super.initState();
     currentLevel = easyLevel;
+    currentLevel.startTimer();
   }
 
   @override
@@ -332,7 +341,7 @@ class _LevelState extends State<Level> {
                               color: Colors.white), // Replace with your style
                         ),
                       ),
-                    )
+                    ),
                   ],
                 ),
               ),
