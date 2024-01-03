@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:fymath/controllers/api_controller.dart';
 import 'package:fymath/pages/Levels/Level.dart';
 import 'package:get/get.dart';
+import 'package:audioplayers/audioplayers.dart';
 
 final MathLevel easyLevel = MathLevel(
   level: 1,
@@ -34,17 +35,50 @@ final MathLevel superLevel = MathLevel(
   requiredPoints: 10,
 );
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
+  const HomePage({Key? key}) : super(key: key);
+
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
   late MathLevel currentLevel;
   late int points = 0;
+  late AudioPlayer audioPlayer;
 
-  HomePage({super.key}) {
-    // Initialize easyLevel before using it
+  @override
+  void initState() {
+    super.initState();
     currentLevel = easyLevel;
     points = 0;
+
+    // Initialize AudioPlayer
+    audioPlayer = AudioPlayer();
+    playBackgroundMusic();
+  }
+
+  void playBackgroundMusic() async {
+    // Use AudioPlayer to load and loop the audio file from the "assets" directory
+    await audioPlayer.setUrl('assets/music/bgms.mp3');
+    audioPlayer.setLoopMode(LoopMode.one);
+    audioPlayer.play();
+  }
+
+  @override
+  void dispose() {
+    // Stop background music when the page is disposed
+    audioPlayer.stop();
+    super.dispose();
   }
 
   final ApiController _apiController = Get.find();
+
+  void _playBackgroundMusic() async {
+    await audioPlayer.setUrl(audioUrl);
+    audioPlayer.setReleaseMode(ReleaseMode.LOOP);
+    audioPlayer.play;
+  }
 
   @override
   Widget build(BuildContext context) {
