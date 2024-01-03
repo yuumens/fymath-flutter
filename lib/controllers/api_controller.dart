@@ -1,17 +1,22 @@
 // ignore_for_file: unnecessary_null_comparison, avoid_print
 
 import 'package:appwrite/appwrite.dart';
+import 'package:appwrite/models.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-final client = Client()
-    .setEndpoint('https://cloud.appwrite.io/v1')
-    .setProject('658f0d832d6677ae2ec9');
-
-final account = Account(client);
-
 class ApiController extends GetxController {
+  final client = Client()
+      .setEndpoint('https://cloud.appwrite.io/v1')
+      .setProject('658f0d832d6677ae2ec9');
+
+  late final account = Account(client);
+  User? _currentUser;
+
   RxString userIdToken = ''.obs;
+
+  User? get currentUser => _currentUser;
+  String? get username => _currentUser?.name;
 
   Future<bool> signUp(String email, String password) async {
     try {
@@ -43,7 +48,7 @@ class ApiController extends GetxController {
       final userIdFromPreferences = response.userId != null;
 
       if (userIdFromPreferences) {
-        account.get();
+        _currentUser = await account.get();
         userIdToken.value = response.userId;
         Get.offAllNamed('/home');
         print('User signed in successfully');

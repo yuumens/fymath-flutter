@@ -90,8 +90,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return 
-    Scaffold(
+    return Scaffold(
       body: GestureDetector(
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
         child: Container(
@@ -152,11 +151,6 @@ class _LoginScreenState extends State<LoginScreen> {
                           width: double.infinity,
                           height: double.infinity,
                           decoration: BoxDecoration(
-                            // image: DecorationImage(
-                            //   image: AssetImage('assets/images/BGLogin.png'),
-                            //   fit: BoxFit.cover,
-                            // ),
-                            // backgroundBlendMode: BlendMode.darken,
                             borderRadius: const BorderRadius.only(
                               topLeft: Radius.circular(20),
                               topRight: Radius.circular(20),
@@ -341,13 +335,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                 child: MaterialButton(
                                   onPressed: () {
                                     _handleSignIn();
-                                    // Add your authentication logic here
-                                    // For demonstration purposes, navigate to HomePage.dart
-                                    Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => HomePage()),
-                                    );
                                   },
                                   height: 45,
                                   padding: EdgeInsets.symmetric(

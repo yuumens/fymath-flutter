@@ -1,12 +1,11 @@
+// ignore_for_file: file_names
+
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:fymath/pages/HomePage.dart';
 import 'package:fymath/pages/utils/my_button.dart';
 import 'package:fymath/pages/utils/result_massage.dart';
 import 'package:fymath/models/Data.dart';
-
-
-
 
 class Level extends StatefulWidget {
   final MathLevel initialLevel;
@@ -150,28 +149,29 @@ class _LevelState extends State<Level> {
       }
     }
 
-    if(correctResult == int.parse(userAnswer)&& currentLevel.level == 4 && points ==9){
+    if (correctResult == int.parse(userAnswer) &&
+        currentLevel.level == 4 &&
+        points == 9) {
       currentLevel.stopTimer();
-      
+
       showDialog(
         context: context,
         builder: (context) {
           return ResultMessage(
-            message: 'Finished with the time of: ${currentLevel.totalElapsedTime}',
-            onTap: (){
+            message:
+                'Finished with the time of: ${currentLevel.totalElapsedTime}',
+            onTap: () {
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(
-                builder: (context) => HomePage()),
+                MaterialPageRoute(builder: (context) => HomePage()),
               );
             },
             icon: Icons.arrow_forward,
           );
         },
       );
-    }
-    else if (correctResult == int.parse(userAnswer)) {
-      currentLevel.totalElapsedTime += Duration(seconds: 1);
+    } else if (correctResult == int.parse(userAnswer)) {
+      currentLevel.totalElapsedTime += const Duration(seconds: 1);
       showDialog(
         context: context,
         builder: (context) {
@@ -209,7 +209,6 @@ class _LevelState extends State<Level> {
     if (currentLevel.level == 1) {
       numberA = randomNumber.nextInt(11);
       numberB = randomNumber.nextInt(11);
-      
     } else if (currentLevel.level == 2) {
       numberA = randomNumber.nextInt(11);
       numberB = 0;
@@ -289,20 +288,20 @@ class _LevelState extends State<Level> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   Text(
                     "Level ${currentLevel.level}",
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Colors.white,
                       fontSize: 30,
                       fontWeight: FontWeight.bold,
                       fontFamily: "Motley",
                     ),
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   Text(
                     "Points: $points",
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Colors.white,
                       fontSize: 20,
                       fontFamily: "Motley",
@@ -319,8 +318,8 @@ class _LevelState extends State<Level> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      '${getEquationText(currentLevel.level)}',
-                      style: TextStyle(
+                      getEquationText(currentLevel.level),
+                      style: const TextStyle(
                           fontSize: 25,
                           fontWeight: FontWeight.bold,
                           color: Colors.white), // Replace with your style
@@ -335,7 +334,7 @@ class _LevelState extends State<Level> {
                       child: Center(
                         child: Text(
                           userAnswer,
-                          style: TextStyle(
+                          style: const TextStyle(
                               fontSize: 25,
                               fontWeight: FontWeight.bold,
                               color: Colors.white), // Replace with your style
@@ -387,11 +386,11 @@ class _LevelState extends State<Level> {
 
   String getEquationText(int level) {
     if (level == 1 || level == 2) {
-      return '${numberA} ${getOperatorString()} ${numberB} = ';
+      return '$numberA ${getOperatorString()} $numberB = ';
     } else if (level == 3) {
-      return '${numberA} ${getOperatorString()} ${numberB} ${getOperatorString()} ${numberC} = ';
+      return '$numberA ${getOperatorString()} $numberB ${getOperatorString()} $numberC = ';
     } else if (level == 4) {
-      return '${numberA} ${getOperatorString()} ${numberB} ${getOperatorString()} ${numberC} ${getOperatorString()} ${numberD} = ';
+      return '$numberA ${getOperatorString()} $numberB ${getOperatorString()} $numberC ${getOperatorString()} $numberD = ';
     } else {
       return '';
     }

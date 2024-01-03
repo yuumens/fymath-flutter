@@ -1,5 +1,6 @@
 // ignore_for_file: must_be_immutable, file_names
 
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:fymath/controllers/api_controller.dart';
 import 'package:fymath/pages/Levels/Level.dart';
@@ -35,14 +36,37 @@ final MathLevel superLevel = MathLevel(
   requiredPoints: 10,
 );
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
+  const HomePage({Key? key}) : super(key: key);
+
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
   late MathLevel currentLevel;
   late int points = 0;
+  final audioPlayer = AudioPlayer();
+  final ApiController appwrite = Get.put(ApiController());
 
-  HomePage({super.key}) {
-    // Initialize easyLevel before using it
+  // Initialize easyLevel before using it
+  @override
+  void initState() {
+    super.initState();
     currentLevel = easyLevel;
     points = 0;
+    playBackgroundMusic();
+  }
+
+  void playBackgroundMusic() async {
+    await audioPlayer.play(AssetSource('music/bgms.mp3'));
+    audioPlayer.setVolume(1);
+  }
+
+  @override
+  void dispose() {
+    audioPlayer.stop();
+    super.dispose();
   }
 
   final ApiController _apiController = Get.find();
@@ -67,6 +91,15 @@ class HomePage extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         const SizedBox(height: 20),
+                        Text(
+                          "Hi ${appwrite.username}",
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 30,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: "Motley",
+                          ),
+                        ),
                         Text(
                           "Level ${currentLevel.level}",
                           style: const TextStyle(
