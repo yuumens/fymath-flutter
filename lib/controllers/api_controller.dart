@@ -18,13 +18,14 @@ class ApiController extends GetxController {
   User? get currentUser => _currentUser;
   String? get username => _currentUser?.name;
 
-  Future<bool> signUp(String email, String password) async {
+  Future<bool> signUp(String email, String password, String username) async {
     try {
       final uniqueUserId = ID.unique();
       final response = await account.create(
         userId: uniqueUserId,
         email: email,
         password: password,
+        name: username,
       );
       final registrationSuccess = response != null;
       if (registrationSuccess) {
