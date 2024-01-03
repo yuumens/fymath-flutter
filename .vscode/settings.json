@@ -1,3 +1,4 @@
 {
-    "cmake.sourceDirectory": "E:/VSCODE/Project/Mobile/fymath/linux"
+  "cmake.sourceDirectory": "E:/VSCODE/Project/Mobile/fymath/linux",
+  "C_Cpp.errorSquiggles": "disabled"
 }

@@ -1,0 +1,23 @@
+{
+    "configurations": [
+        {
+            "name": "Win32",
+            "includePath": [
+                "C:\\MinGW\\include",
+                "C:/Users/ahmad/AppData/Local/Pub/Cache/hosted/pub.dev/url_launcher_windows-3.1.1/windows/include",
+                "${workspaceFolder}/windows/flutter/ephemeral/.plugin_symlinks/audioplayers_windows/windows/include",
+                "C:/Users/ahmad/AppData/Local/Pub/Cache/hosted/pub.dev/window_to_front-0.0.3/linux/flutter/ephemeral/.plugin_symlinks/window_to_front/windows/include"
+            ],
+            "defines": [
+                "_DEBUG",
+                "UNICODE",
+                "_UNICODE"
+            ],
+            "cStandard": "c11",
+            "cppStandard": "gnu++14",
+            "intelliSenseMode": "windows-gcc-x86",
+            "compilerPath": "C:/MinGW/bin/g++.exe"
+        }
+    ],
+    "version": 4
+}

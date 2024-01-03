@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:fymath/controllers/api_controller.dart';
 import 'package:get/get.dart';
-import '../routes/routes.dart';
+import 'routes/routes.dart';
 import 'package:appwrite/appwrite.dart';
 
 void main() async {
