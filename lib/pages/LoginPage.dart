@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:fymath/controllers/api_controller.dart';
 import 'package:fymath/pages/ForgotPassword.dart';
 import 'package:get/get.dart';
-import 'package:fymath/pages/HomePage.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -21,6 +20,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController passwordTextController = TextEditingController();
   final TextEditingController passwordRetypeTextController =
       TextEditingController();
+  final TextEditingController usernametextController = TextEditingController();
   final ApiController _apiController = Get.find();
 
   void _handleSignIn() async {
@@ -56,9 +56,14 @@ class _LoginScreenState extends State<LoginScreen> {
     final email = emailTextController.text;
     final password = passwordTextController.text;
     final enterPassword = passwordRetypeTextController.text;
+    final username = usernametextController.text;
 
-    if (email.isEmpty || password.isEmpty || enterPassword.isEmpty) {
-      Get.snackbar("Error", "Email, password, and retype password are required",
+    if (username.isEmpty ||
+        email.isEmpty ||
+        password.isEmpty ||
+        enterPassword.isEmpty) {
+      Get.snackbar("Error",
+          "Username, Email, password, and retype password are required",
           snackPosition: SnackPosition.BOTTOM,
           backgroundColor: Colors.black,
           colorText: Colors.red);
@@ -73,7 +78,8 @@ class _LoginScreenState extends State<LoginScreen> {
       return;
     }
 
-    final signUpSuccessful = await _apiController.signUp(email, password);
+    final signUpSuccessful =
+        await _apiController.signUp(email, password, username);
 
     if (signUpSuccessful) {
       Get.snackbar("Success", "Account has been created",
@@ -426,12 +432,12 @@ class _LoginScreenState extends State<LoginScreen> {
                                     height: 50,
                                     width: 310,
                                     child: TextField(
-                                      controller: emailTextController,
+                                      controller: usernametextController,
                                       showCursor: true,
                                       cursorColor: Colors.black,
                                       decoration: InputDecoration(
-                                        labelText: "Email",
-                                        hintText: "Username or E-mail",
+                                        labelText: "Username",
+                                        hintText: "Username",
                                         hintStyle: TextStyle(
                                             color: Colors.grey, fontSize: 15),
                                         labelStyle: TextStyle(
@@ -440,6 +446,55 @@ class _LoginScreenState extends State<LoginScreen> {
                                             fontWeight: FontWeight.w400),
                                         prefixIcon: Icon(
                                           Icons.perm_identity_sharp,
+                                          color: Colors.black,
+                                          size: 25,
+                                        ),
+                                        enabledBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: Colors.grey.shade200,
+                                                width: 2),
+                                            borderRadius:
+                                                BorderRadius.circular(10)),
+                                        floatingLabelStyle: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 18,
+                                        ),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                              color: Colors.deepPurpleAccent,
+                                              width: 1.5),
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    height: 50,
+                                    width: 310,
+                                    child: TextField(
+                                      controller: emailTextController,
+                                      showCursor: true,
+                                      cursorColor: Colors.black,
+                                      decoration: InputDecoration(
+                                        labelText: "Email",
+                                        hintText: "Email",
+                                        hintStyle: TextStyle(
+                                            color: Colors.grey, fontSize: 15),
+                                        labelStyle: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w400),
+                                        prefixIcon: Icon(
+                                          Icons.mail_outline_rounded,
                                           color: Colors.black,
                                           size: 25,
                                         ),
