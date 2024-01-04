@@ -45,7 +45,9 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   late MathLevel currentLevel;
   late int points = 0;
-  late AudioPlayer audioPlayer;
+  final audioPlayer = AudioPlayer();
+  final ApiController appwrite = Get.put(ApiController());
+  bool isMusicOn = true;
 
   @override
   void initState() {
@@ -54,15 +56,12 @@ class _HomePageState extends State<HomePage> {
     points = 0;
 
     // Initialize AudioPlayer
-    audioPlayer = AudioPlayer();
     playBackgroundMusic();
   }
 
   void playBackgroundMusic() async {
-    // Use AudioPlayer to load and loop the audio file from the "assets" directory
-    await audioPlayer.setUrl('assets/music/bgms.mp3');
-    audioPlayer.setLoopMode(LoopMode.one);
-    audioPlayer.play();
+    await audioPlayer.play(AssetSource('music/bgms.mp3'));
+    audioPlayer.setVolume(1);
   }
 
   @override
@@ -73,12 +72,6 @@ class _HomePageState extends State<HomePage> {
   }
 
   final ApiController _apiController = Get.find();
-
-  void _playBackgroundMusic() async {
-    await audioPlayer.setUrl(audioUrl);
-    audioPlayer.setReleaseMode(ReleaseMode.LOOP);
-    audioPlayer.play;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -93,6 +86,19 @@ class _HomePageState extends State<HomePage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               mainAxisSize: MainAxisSize.max,
               children: [
+                IconButton(
+                  icon: const Icon(Icons.leaderboard_rounded),
+                  onPressed: () {
+                    _showLeaderBoard();
+                  },
+                  color: Colors.white,
+                ),
+                IconButton(
+                  icon: const Icon(Icons.settings), // Add settings icon
+                  onPressed: () {
+                    _showSettingsDialog();
+                  },
+                ),
                 Expanded(
                   child: Container(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -226,6 +232,117 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
       ),
+    );
+  }
+
+  void _showSettingsDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return AlertDialog(
+              title: Text(
+                'Settings',
+                style: TextStyle(
+                  color: Colors.deepPurple,
+                  fontSize: 20,
+                  fontFamily: "Motley",
+                ),
+              ),
+              content: Container(
+                height: MediaQuery.of(context).size.height * 0.20,
+                width: MediaQuery.of(context).size.width * 0.200,
+                child: Column(
+                  children: [
+                    ListTile(
+                      title: Text(
+                        'Music',
+                        style: TextStyle(
+                          fontFamily: "Motley",
+                        ),
+                      ),
+                      trailing: Switch(
+                        value: isMusicOn,
+                        onChanged: (value) {
+                          setState(() {
+                            isMusicOn = value;
+                            playBackgroundMusic();
+                          });
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Text(
+                    'Close',
+                    style: TextStyle(
+                      fontFamily: "Motley",
+                    ),
+                  ),
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
+
+  void _showLeaderBoard() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Material(
+          type: MaterialType.transparency,
+          child: Center(
+            child: Container(
+              margin: const EdgeInsets.symmetric(horizontal: 20.0),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Text(
+                      'LeaderBoard',
+                      style: TextStyle(
+                        color: Colors.deepPurple,
+                        fontSize: 20,
+                        fontFamily: "Motley",
+                      ),
+                    ),
+                  ),
+                  Container(
+                    height: MediaQuery.of(context).size.height * 0.60,
+                    width: MediaQuery.of(context).size.width * 0.700,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Your LeaderBoard Content Here',
+                          textAlign: TextAlign.center,
+                        ),
+
+                        // Add other leaderboard content here
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 }

@@ -38,6 +38,9 @@ dependencies:
   appwrite: ^11.0.1
   flame: ^1.0.0
   audioplayers: ^5.2.1
+  dio: ^4.0.0
+  shared_preferences: ^2.0.8
+  provider: ^6.0.5
 
 dev_dependencies:
   flutter_test:
