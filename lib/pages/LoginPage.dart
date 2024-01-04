@@ -120,13 +120,6 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         );
                       },
-                      child: Text(
-                        "Welcome Back",
-                        style: TextStyle(
-                            fontSize: 60,
-                            color: Colors.white,
-                            fontFamily: "Raleway"),
-                      ),
                     ),
                   ),
                 ),
@@ -136,7 +129,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               Container(),
               Expanded(
-                flex: 2,
+                flex: 4,
                 child: playAreas == false
                     ? TweenAnimationBuilder(
                         tween: Tween<double>(begin: 0, end: 1),
