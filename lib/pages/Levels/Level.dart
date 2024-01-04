@@ -1,11 +1,13 @@
 // ignore_for_file: file_names
 
+import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:fymath/pages/HomePage.dart';
 import 'package:fymath/pages/utils/my_button.dart';
 import 'package:fymath/pages/utils/result_massage.dart';
 import 'package:fymath/models/Data.dart';
+import 'package:provider/provider.dart';
 
 class Level extends StatefulWidget {
   final MathLevel initialLevel;
@@ -80,6 +82,7 @@ class _LevelState extends State<Level> {
   int numberD = 1;
   String userAnswer = '';
   MathOperator currentOperator = MathOperator.addition;
+  int elapsedSeconds = 0;
 
   var randomNumber = Random();
 
@@ -272,6 +275,12 @@ class _LevelState extends State<Level> {
     super.initState();
     currentLevel = easyLevel;
     currentLevel.startTimer();
+
+    Timer.periodic(Duration(seconds: 1), (timer) {
+      setState(() {
+        elapsedSeconds++; // Increment elapsed seconds every second
+      });
+    });
   }
 
   @override
@@ -282,7 +291,7 @@ class _LevelState extends State<Level> {
         children: [
           Container(
             width: 1000,
-            height: 160,
+            height: 200,
             color: Colors.deepPurple,
             child: Center(
               child: Column(
@@ -298,12 +307,21 @@ class _LevelState extends State<Level> {
                       fontFamily: "Motley",
                     ),
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 15),
                   Text(
                     "Points: $points",
                     style: const TextStyle(
                       color: Colors.white,
                       fontSize: 20,
+                      fontFamily: "Motley",
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    "Time: $elapsedSeconds s",
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 15,
                       fontFamily: "Motley",
                     ),
                   ),
